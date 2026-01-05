@@ -49,9 +49,8 @@ const CardView = ({
 
   return (
     <View
-      className={`mb-4 rounded-2xl w-full h-40 flex-row items-center justify-between overflow-hidden ${
-        isOdd ? "pr-4" : "pl-4"
-      }`}
+      className={`mb-4 rounded-2xl w-full h-40 flex-row items-center justify-between overflow-hidden ${isOdd ? "pr-4" : "pl-4"
+        }`}
       style={{ backgroundColor: item.color }}
     >
       {isOdd ? (

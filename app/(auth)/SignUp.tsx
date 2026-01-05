@@ -1,15 +1,117 @@
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native";
+import React, { useState } from "react";
 import { Button } from "react-native-paper";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
+import CustomInput from "../../components/CustomInput";
 
 const SignUp = () => {
+  const router = useRouter();
+
+  const [form, setForm] = useState({
+    name: "",
+    mobile: "",
+    email: "",
+    password: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string; mobile?: string; email?: string; password?: string }>({});
+
+  const submit = async () => {
+    setErrors({}); // Clear previous errors
+
+    let newErrors: typeof errors = {};
+    if (!form.name) newErrors.name = "Please enter your name";
+    if (!form.mobile) newErrors.mobile = "Please enter your mobile number";
+    if (!form.email) newErrors.email = "Please enter your email";
+    if (!form.password) newErrors.password = "Please enter your password";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // TODO: Implement actual Appwrite sign up logic here
+      console.log("Signing up with", form);
+      // Simulating success for UI testing
+      setTimeout(() => {
+        setIsSubmitting(false);
+        router.replace("/SignIn");
+      }, 1000);
+
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <View className="flex-1 justify-center items-center bg-white">
-      <Text className="text-2xl font-bold">SignUp Page</Text>
-      <View className="h-2" />
-      <Button mode="contained" onPress={() => router.push("/SignIn")}>
-        Sign In
+    <View className="bg-white h-full px-6">
+      <CustomInput
+        label="Name"
+        value={form.name}
+        onChangeText={(text) => setForm({ ...form, name: text })}
+        placeholder="Enter your name"
+        containerStyles="mt-7"
+        error={errors.name}
+      />
+
+      <CustomInput
+        label="Mobile Number"
+        value={form.mobile}
+        onChangeText={(text) => setForm({ ...form, mobile: text })}
+        placeholder="Enter your mobile number"
+        keyboardType="phone-pad"
+        containerStyles="mt-7"
+        error={errors.mobile}
+      />
+
+      <CustomInput
+        label="Email"
+        value={form.email}
+        onChangeText={(text) => setForm({ ...form, email: text })}
+        placeholder="Enter your email"
+        keyboardType="email-address"
+        containerStyles="mt-7"
+        error={errors.email}
+      />
+
+      <CustomInput
+        label="Password"
+        value={form.password}
+        onChangeText={(text) => setForm({ ...form, password: text })}
+        placeholder="Enter your password"
+        secureTextEntry
+        containerStyles="mt-7"
+        error={errors.password}
+      />
+
+      <Button
+        mode="contained"
+        onPress={submit}
+        loading={isSubmitting}
+        disabled={isSubmitting}
+        buttonColor="#FE8C00"
+        className="mt-10 rounded-xl py-1"
+        labelStyle={{ fontFamily: 'Quicksand-Bold', fontSize: 18, color: 'white' }}
+      >
+        Sign Up
       </Button>
+
+      <View className="flex-row justify-center pt-5 gap-2">
+        <Text className="text-gray-100 font-quicksand-medium">
+          Already have an account?
+        </Text>
+        <Text
+          className="text-primary font-quicksand-semibold"
+          onPress={() => router.push("/SignIn")}
+        >
+          Sign In
+        </Text>
+      </View>
     </View>
   );
 };

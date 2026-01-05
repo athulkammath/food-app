@@ -1,17 +1,101 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { View, Text, Alert } from "react-native";
+import React, { useState } from "react";
 import { Button } from "react-native-paper";
 import { useRouter } from "expo-router";
+import CustomInput from "../../components/CustomInput";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignIn = () => {
   const router = useRouter();
+  const { setIsLogged } = useGlobalContext();
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+
+  const submit = async () => {
+    setErrors({}); // Clear previous errors
+
+    if (!form.email) {
+      setErrors((prev) => ({ ...prev, email: "Please enter your email" }));
+    }
+    if (!form.password) {
+      setErrors((prev) => ({ ...prev, password: "Please enter your password" }));
+    }
+
+    if (!form.email || !form.password) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // TODO: Implement actual Appwrite login logic here
+      // const result = await logIn(form.email, form.password);
+      setIsLogged(true);
+      router.replace("/");
+      console.log("Logging in with", form);
+      // Simulating success for UI testing
+      setTimeout(() => setIsSubmitting(false), 1000);
+
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <View className="flex-1 justify-center items-center bg-white">
-      <Text className="text-2xl font-bold">SignIn Page</Text>
-      <View className="h-2" />
-      <Button mode="contained" onPress={() => router.push("/SignUp")}>
-        Sign Up
+    <View className="bg-white h-full px-6">
+
+      <CustomInput
+        label="Email"
+        value={form.email}
+        onChangeText={(text) => setForm({ ...form, email: text })}
+        placeholder="Enter your email"
+        keyboardType="email-address"
+        containerStyles="mt-7"
+        error={errors.email}
+      />
+
+      <CustomInput
+        label="Password"
+        value={form.password}
+        onChangeText={(text) => setForm({ ...form, password: text })}
+        placeholder="Enter your password"
+        keyboardType="default"
+        secureTextEntry
+        containerStyles="mt-7"
+        error={errors.password}
+      />
+
+      <View className="mt-2 flex-row justify-end">
+        <Text className="text-primary font-quicksand-medium">Forgot Password?</Text>
+      </View>
+
+      <Button
+        mode="contained"
+        onPress={submit}
+        loading={isSubmitting}
+        disabled={isSubmitting}
+        buttonColor="#FE8C00"
+        className="mt-5 rounded-xl py-1"
+        labelStyle={{ fontFamily: 'Quicksand-Bold', fontSize: 18, color: 'white' }}
+      > Login
       </Button>
+
+      <View className="flex-row justify-center pt-1 gap-2">
+        <Text className="text-gray-100 font-quicksand-medium">
+          Don't have an account?
+        </Text>
+        <Text
+          className="text-primary font-quicksand-semibold"
+          onPress={() => router.push("/SignUp")}
+        >
+          Sign Up
+        </Text>
+      </View>
     </View>
   );
 };
