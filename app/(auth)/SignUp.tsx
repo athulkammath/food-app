@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "react-native-paper";
 import { useRouter } from "expo-router";
 import CustomInput from "../../components/CustomInput";
+import { createUser } from "@/lib/appwrite";
 
 const SignUp = () => {
   const router = useRouter();
@@ -15,16 +16,16 @@ const SignUp = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<{ name?: string; mobile?: string; email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({});
 
   const submit = async () => {
-    setErrors({}); // Clear previous errors
+    setErrors({}); // Clear previous errors 
+    const { name, email, password } = form;
 
     let newErrors: typeof errors = {};
-    if (!form.name) newErrors.name = "Please enter your name";
-    if (!form.mobile) newErrors.mobile = "Please enter your mobile number";
-    if (!form.email) newErrors.email = "Please enter your email";
-    if (!form.password) newErrors.password = "Please enter your password";
+    if (!name) newErrors.name = "Please enter your name";
+    if (!email) newErrors.email = "Please enter your email";
+    if (!password) newErrors.password = "Please enter your password";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -34,16 +35,24 @@ const SignUp = () => {
     setIsSubmitting(true);
 
     try {
+      await createUser({
+        email: email,
+        password: password,
+        name: name,
+      });
       // TODO: Implement actual Appwrite sign up logic here
-      console.log("Signing up with", form);
+      console.log("Signing up with", { email, password, name });
       // Simulating success for UI testing
-      setTimeout(() => {
-        setIsSubmitting(false);
-        router.replace("/SignIn");
-      }, 1000);
-
+      // setTimeout(() => {
+      //   setIsSubmitting(false);
+      //   router.replace("/SignIn");
+      // }, 1000);
+      Alert.alert("Success", "User created successfully");
+      setIsSubmitting(false);
+      router.replace("/SignIn");
     } catch (error: any) {
       Alert.alert("Error", error.message);
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -59,7 +68,7 @@ const SignUp = () => {
         error={errors.name}
       />
 
-      <CustomInput
+      {/* <CustomInput
         label="Mobile Number"
         value={form.mobile}
         onChangeText={(text) => setForm({ ...form, mobile: text })}
@@ -67,7 +76,7 @@ const SignUp = () => {
         keyboardType="phone-pad"
         containerStyles="mt-7"
         error={errors.mobile}
-      />
+      /> */}
 
       <CustomInput
         label="Email"
@@ -84,7 +93,8 @@ const SignUp = () => {
         value={form.password}
         onChangeText={(text) => setForm({ ...form, password: text })}
         placeholder="Enter your password"
-        secureTextEntry
+        keyboardType="default"
+        isPassword
         containerStyles="mt-7"
         error={errors.password}
       />

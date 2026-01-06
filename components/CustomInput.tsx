@@ -1,9 +1,12 @@
-import { View, Text, TextInput, TextInputProps } from 'react-native'
+import { View, Text, TextInput, TextInputProps, TouchableOpacity, Image } from 'react-native'
+import { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 interface CustomInputProps extends TextInputProps {
     label: string;
     error?: string;
     containerStyles?: string;
+    isPassword?: boolean;
 }
 
 export default function CustomInput({
@@ -11,8 +14,11 @@ export default function CustomInput({
     error,
     containerStyles,
     keyboardType,
+    isPassword = false,
     ...props
 }: CustomInputProps) {
+    const [showPassword, setShowPassword] = useState(false);
+
     return (
         <View className={`space-y-2 ${containerStyles}`}>
             <Text className="text-base text-gray-100 font-quicksand-medium">{label}</Text>
@@ -22,8 +28,19 @@ export default function CustomInput({
                     className="flex-1 text-gray-100 font-quicksand-semibold text-base"
                     placeholderTextColor="#878792ff"
                     keyboardType={keyboardType}
+                    secureTextEntry={isPassword ? !showPassword : props.secureTextEntry}
                     {...props}
                 />
+
+                {isPassword && (
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                        <Ionicons
+                            name={showPassword ? "eye" : "eye-off"}
+                            size={20}
+                            color="#878792"
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
 
             {error && (

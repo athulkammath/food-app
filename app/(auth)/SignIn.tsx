@@ -4,6 +4,7 @@ import { Button } from "react-native-paper";
 import { useRouter } from "expo-router";
 import CustomInput from "../../components/CustomInput";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import { signIn } from "@/lib/appwrite";
 
 const SignIn = () => {
   const router = useRouter();
@@ -32,12 +33,12 @@ const SignIn = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Implement actual Appwrite login logic here
-      // const result = await logIn(form.email, form.password);
       setIsLogged(true);
-      router.replace("/");
+      await signIn({ email: form.email, password: form.password });
+
       console.log("Logging in with", form);
-      // Simulating success for UI testing
+      Alert.alert("Success", "Logged in successfully");
+      router.replace("/");
       setTimeout(() => setIsSubmitting(false), 1000);
 
     } catch (error: any) {
@@ -65,7 +66,7 @@ const SignIn = () => {
         onChangeText={(text) => setForm({ ...form, password: text })}
         placeholder="Enter your password"
         keyboardType="default"
-        secureTextEntry
+        isPassword
         containerStyles="mt-7"
         error={errors.password}
       />
