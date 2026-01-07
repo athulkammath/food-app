@@ -22,7 +22,7 @@ export default function _layout() {
             className={`flex-1 items-center py-3 ${!pathname.endsWith("/SignUp") ? "bg-white" : "bg-gray-50"}`}
             activeOpacity={0.7}
           >
-            <Text className={`text-xl ${!pathname.endsWith("/SignUp") ? "text-primary font-quicksand-bold" : "text-gray-100 font-quicksand-medium"}`}>
+            <Text className={`text-xl ${!pathname.endsWith("/SignUp") ? "text-primary font-quicksand-semibold" : "text-gray-100 font-quicksand-semibold"}`}>
               Sign-in
             </Text>
           </TouchableOpacity>
@@ -32,7 +32,7 @@ export default function _layout() {
             className={`flex-1 items-center py-3 ${pathname.endsWith("/SignUp") ? "bg-white" : "bg-gray-50"}`}
             activeOpacity={0.7}
           >
-            <Text className={`text-xl ${pathname.endsWith("/SignUp") ? "text-primary font-quicksand-bold" : "text-gray-100 font-quicksand-medium"}`}>
+            <Text className={`text-xl ${pathname.endsWith("/SignUp") ? "text-primary font-quicksand-semibold" : "text-gray-100 font-quicksand-semibold"}`}>
               Sign-up
             </Text>
           </TouchableOpacity>

@@ -72,7 +72,7 @@ const SignIn = () => {
       />
 
       <View className="mt-2 flex-row justify-end">
-        <Text className="text-primary font-quicksand-medium">Forgot Password?</Text>
+        <Text className="text-primary font-quicksand-small">Forgot Password?</Text>
       </View>
 
       <Button
@@ -82,16 +82,16 @@ const SignIn = () => {
         disabled={isSubmitting}
         buttonColor="#FE8C00"
         className="mt-5 rounded-xl py-1"
-        labelStyle={{ fontFamily: 'Quicksand-Bold', fontSize: 18, color: 'white' }}
+        labelStyle={{ fontSize: 18, color: 'white' }}
       > Login
       </Button>
 
       <View className="flex-row justify-center pt-1 gap-2">
-        <Text className="text-gray-100 font-quicksand-medium">
+        <Text className="text-gray-100 font-quicksand-small">
           Don't have an account?
         </Text>
         <Text
-          className="text-primary font-quicksand-semibold"
+          className="text-primary font-quicksand-small"
           onPress={() => router.push("/SignUp")}
         >
           Sign Up

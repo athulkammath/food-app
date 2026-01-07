@@ -1,13 +1,14 @@
-import React from "react";
-import { View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import BannerList from "./BannerList";
+import { View, Text } from 'react-native'
+import React from 'react'
+import { tabs } from '../../constants/tabs'
 
-export default function Index() {
+// Find the component dynamically or fallback
+const TabContent = tabs.find(t => t.name === 'index')?.component || (() => <View><Text>Home</Text></View>);
+
+const Home = () => {
   return (
-    <SafeAreaView className="flex-1 px-4 my-4 bg-white">
-      <View className="h-2" />
-      <BannerList />
-    </SafeAreaView>
-  );
+    <TabContent />
+  )
 }
+
+export default Home

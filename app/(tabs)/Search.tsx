@@ -1,11 +1,13 @@
-import { View, Text } from "react-native";
+import { View, Text } from 'react-native'
+import React from 'react'
+import { tabs } from '../../constants/tabs'
+
+const TabContent = tabs.find(t => t.name === 'Search')?.component || (() => <View><Text>Search</Text></View>);
 
 const Search = () => {
   return (
-    <View>
-      <Text>Search</Text>
-    </View>
-  );
-};
+    <TabContent />
+  )
+}
 
-export default Search;
+export default Search

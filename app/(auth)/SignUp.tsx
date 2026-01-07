@@ -106,7 +106,7 @@ const SignUp = () => {
         disabled={isSubmitting}
         buttonColor="#FE8C00"
         className="mt-10 rounded-xl py-1"
-        labelStyle={{ fontFamily: 'Quicksand-Bold', fontSize: 18, color: 'white' }}
+        labelStyle={{ fontSize: 18, color: 'white' }}
       >
         Sign Up
       </Button>

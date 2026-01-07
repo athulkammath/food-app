@@ -86,3 +86,33 @@ export const signIn = async ({ email, password }: SignInParams) => {
         throw new Error(error.message || "Sign in failed");
     }
 };
+
+export const getCurrentUser = async () => {
+    try {
+        const currentAccount = await account.get();
+
+        if (!currentAccount) {
+            throw new Error("Failed to get current user");
+        }
+
+        console.log(`[getCurrentUser] Account ID: ${currentAccount.$id}`);
+
+        const currentUser = await databases.getDocument(
+            appwriteConfig.databaseID!,
+            appwriteConfig.userCollectionID!,
+            currentAccount.$id
+        );
+
+        if (!currentUser) {
+            console.log(`[getCurrentUser] No user document found for ID: ${currentAccount.$id}`);
+            throw new Error("Failed to get current user");
+        }
+
+        console.log(`[getCurrentUser] User document found:`, currentUser);
+        return currentUser;
+
+    } catch (error: any) {
+        console.error("Appwrite Error:", error);
+        return null;
+    }
+};
