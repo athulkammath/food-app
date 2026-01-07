@@ -6,10 +6,11 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import { Badge } from "react-native-paper";
+import { Badge, Button } from "react-native-paper";
 
 import { images, offers } from "../../constants";
 import CartButton from "../../components/CartButton";
+import * as Sentry from '@sentry/react-native';
 
 const BannerList = () => {
   return (
