@@ -1,7 +1,6 @@
 import { Stack } from "expo-router";
 import { PaperProvider } from "react-native-paper";
 import "./global.css";
-import React from "react";
 import GlobalProvider from "../context/GlobalProvider";
 import * as Sentry from '@sentry/react-native';
 
@@ -24,12 +23,17 @@ Sentry.init({
   // spotlight: __DEV__,
 });
 
+import { Provider } from "react-redux";
+import { store } from "@/src/store/store";
+
 export default Sentry.wrap(function Layout() {
   return (
-    <GlobalProvider>
-      <PaperProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-      </PaperProvider>
-    </GlobalProvider>
+    <Provider store={store}>
+      <GlobalProvider>
+        <PaperProvider>
+          <Stack screenOptions={{ headerShown: false }} />
+        </PaperProvider>
+      </GlobalProvider>
+    </Provider>
   );
 });
