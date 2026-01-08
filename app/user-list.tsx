@@ -5,8 +5,6 @@ import { useGetAllUsersQuery } from "../src/services/jsonPlaceholderApi";
 export default function UserList() {
     const { data, error, isLoading } = useGetAllUsersQuery({});
 
-    console.log('data', data, error);
-
     return (
         <View style={{ flex: 1, backgroundColor: "#fff" }}>
             <Stack.Screen options={{ title: "User List" }} />
